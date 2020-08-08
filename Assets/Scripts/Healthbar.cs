@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Healthbar : MonoBehaviour
@@ -11,5 +12,13 @@ public class Healthbar : MonoBehaviour
         bar.fillAmount = percentage;
     }
 
-
+    private void OnEnable()
+    {
+        Health.healthChanged += UpdateSize;
+    }
+    
+    private void OnDisable()
+    {
+        Health.healthChanged -= UpdateSize;
+    }
 }

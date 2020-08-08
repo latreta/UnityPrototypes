@@ -4,33 +4,34 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    private int maxHealth = 100;
+    private float maxHealth = 100f;
     [SerializeField]
     private Healthbar healthbar;
     float timeElapsed = 0f;
+    [SerializeField]
+    float lifeOverTime = 0.1f;
+    [SerializeField]
+    private float CurrentHealth;
 
-    public int CurrentHealth { get; private set; }
+    public delegate void HealthChangeDelegate(float amount);
+
+    public static HealthChangeDelegate healthChanged = delegate {};
 
     private void OnEnable()
     {
         CurrentHealth = maxHealth;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        timeElapsed += Time.deltaTime;
-        if(timeElapsed >= 5f)
-        {
-            TakeDamage(-5);
-            timeElapsed = 0f;
-        }
+        TakeDamage(lifeOverTime * Time.fixedDeltaTime);
     }
 
-    private void TakeDamage(int amount)
+    private void TakeDamage(float amount)
     {
         Debug.Log("Taking damage");
-        CurrentHealth += amount;
-        float currentHealthPct = (float)CurrentHealth / (float)maxHealth;
-        healthbar.UpdateSize(currentHealthPct);
+        CurrentHealth -= amount;
+        float currentHealthPct = CurrentHealth / maxHealth;
+        healthChanged?.Invoke(currentHealthPct);
     }
 }
