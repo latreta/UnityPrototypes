@@ -1,5 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace.UI;
 
-public class ThirstyBar : MonoBehaviour
+public class ThirstyBar : StatusBar
 {
 }
