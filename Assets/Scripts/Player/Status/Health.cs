@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
+using DefaultNamespace.Player.Status;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IStatus
 {
     [SerializeField]
     private float maxHealth = 100f;
@@ -9,6 +11,8 @@ public class Health : MonoBehaviour
     float lifeOverTime = 0.1f;
     [SerializeField]
     private float CurrentHealth;
+
+    private Coroutine currentBuff = null;
 
     private float timeElapsed = 0f;
 
@@ -24,6 +28,7 @@ public class Health : MonoBehaviour
     private void OnEnable()
     {
         CurrentHealth = maxHealth;
+        StatusManager.onHealthBuffApplied += ApplyBuff;
         onCharacterDeath += Die;
         Hunger.maxHungerReached += MaxHungerReached;
     }
@@ -33,10 +38,31 @@ public class Health : MonoBehaviour
         isHungry = true;
     }
 
+    public void ApplyBuff(Buff buff)
+    {
+
+        if (currentBuff == null)
+        {
+            currentBuff = StartCoroutine("HandleBuff", buff);
+        }
+
+    }
+
+    public IEnumerator HandleBuff(Buff buff)
+    {
+        var previousValue = maxHealth;
+        maxHealth = buff.isDebuff ? maxHealth - buff.amount : maxHealth + buff.amount;
+        yield return new WaitForSeconds(buff.duration);
+        maxHealth = previousValue;
+        currentBuff = null;
+        yield return null;
+    }
+
     private void OnDisable()
     {
         onCharacterDeath -= Die;
         Hunger.maxHungerReached -= MaxHungerReached;
+        StatusManager.onHealthBuffApplied -= ApplyBuff;
     }
 
     private void Die()

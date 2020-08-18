@@ -133,9 +133,10 @@ GameObject:
   - component: {fileID: 178681417}
   - component: {fileID: 178681416}
   - component: {fileID: 178681415}
+  - component: {fileID: 178681421}
   - component: {fileID: 178681419}
   - component: {fileID: 178681422}
-  - component: {fileID: 178681421}
+  - component: {fileID: 178681420}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -221,6 +222,18 @@ MonoBehaviour:
   maxHealth: 100
   lifeOverTime: 0.17
   CurrentHealth: 0
+--- !u!114 &178681420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178681414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4823e2a1cc7c23a45bb699c6b76fffa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &178681421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,9 +243,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 178681414}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad944d4399853c945bc9c585d6c15bb7, type: 3}
+  m_Script: {fileID: 11500000, guid: 43308fb9aa73e7042a41218dfe9063ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buffToApply: {fileID: 11400000, guid: 0989aff8a487f954f8350e8c899c5d95, type: 2}
 --- !u!114 &178681422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,8 +260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHunger: 100
-  hungerOverTime: 72.1
-  CurrentHunger: 100
+  hungerOverTime: 0.17
+  CurrentHunger: 0
   tickTime: 5
 --- !u!1001 &196198224
 PrefabInstance:

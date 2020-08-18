@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Hunger : MonoBehaviour
@@ -17,16 +18,44 @@ public class Hunger : MonoBehaviour
     [Tooltip("Tick Damage time in seconds")]
     [Range(0f,100f)]
     private float tickTime = 5f;
+
+    private StatusManager statusManager;
     
     public delegate void OnHungerChangedDelegate(float amount);
     public delegate void OnHungerFullDelegate();
 
     public static event OnHungerChangedDelegate hungerChanged = delegate { };
     public static OnHungerFullDelegate maxHungerReached = delegate { };
+
+    void Start()
+    {
+        statusManager = GetComponent<StatusManager>();
+    }
     
     void OnEnable()
     {
         CurrentHunger = maxHunger;
+        StatusManager.onHungerBuffApplied += OnHungerBuffApplied;
+    }
+
+    private void OnHungerBuffApplied(Buff buff)
+    {
+
+        StartCoroutine("HandleBuff", buff);
+    }
+
+    IEnumerator HandleBuff(Buff buff)
+    {
+        var previousValue = maxHunger;
+        maxHunger = buff.isDebuff ? maxHunger - buff.amount : maxHunger + buff.amount;
+        yield return new WaitForSeconds(buff.duration);
+        maxHunger = previousValue;
+        yield return null;
+    }
+
+    void OnDisable()
+    {
+        StatusManager.onHungerBuffApplied -= OnHungerBuffApplied;
     }
 
     private void FixedUpdate()
