@@ -1,31 +1,28 @@
-﻿using System;
+﻿using Interactables;
 using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
-    public Buff buffToApply;
-    private StatusManager statusManager;
-    private bool isToApplyBuff = false;
+    [SerializeField]
+    private Camera firstPersonCamera;
 
-    private void Start()
+    private void FixedUpdate()
     {
-        statusManager = GetComponent<StatusManager>();
-    }
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Fire1"))
+        if (firstPersonCamera != null)
         {
-            isToApplyBuff = true;
+            Interact();
         }
     }
 
-    void FixedUpdate()
+    private void Interact()
     {
-        if (isToApplyBuff)
+        Ray ray = firstPersonCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        RaycastHit hit;
+        
+        if (Physics.Raycast(ray, out hit, 2f))
         {
-            statusManager.ApplyBuff(buffToApply);
-            isToApplyBuff = false;
+            IInteractable interactable = hit.transform.gameObject.GetComponent<IInteractable>();
+            interactable?.Interact();
         }
     }
 }

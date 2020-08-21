@@ -4,29 +4,25 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private Vector3 movementDir = Vector3.zero;
-    private CharacterController _characterController;
-    [SerializeField]
-    private float movementSpeed = 10f;
+    private IMotor _motor;
+    private bool isJumpPressed = false;
 
-    void Awake()
+    void Start()
     {
-        _characterController = GetComponent<CharacterController>();
-        if (_characterController == null)
+        _motor = GetComponent<IMotor>();
+        
+        if (_motor == null)
         {
-            Debug.LogWarning("No character controller found.");
+            Debug.LogWarning("No Player Moto was found.");
         }
     }
     void Update()
     {
-        float xMov = Input.GetAxisRaw("Horizontal");
-        float zMov = Input.GetAxisRaw("Vertical");
+        float xMov = Input.GetAxis("Horizontal");
+        float zMov = Input.GetAxis("Vertical");
+        isJumpPressed = Input.GetButtonDown("Jump");
 
         movementDir = new Vector3(xMov, 0, zMov);
-    }
-
-    private void FixedUpdate()
-    {
-        movementDir *= Time.fixedDeltaTime * movementSpeed;
-        _characterController.Move(movementDir);
+        _motor?.Move(movementDir, isJumpPressed);
     }
 }
