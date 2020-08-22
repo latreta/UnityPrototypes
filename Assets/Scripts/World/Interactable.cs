@@ -6,6 +6,7 @@ namespace Interactables
     {
         public void Interact()
         {
+            Debug.Log(gameObject.name);
         }
     }
 }
