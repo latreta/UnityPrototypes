@@ -28,7 +28,6 @@ public class Health : MonoBehaviour, IStatus
     private void OnEnable()
     {
         CurrentHealth = maxHealth;
-        StatusManager.onHealthBuffApplied += ApplyBuff;
         onCharacterDeath += Die;
         Hunger.maxHungerReached += MaxHungerReached;
     }
@@ -62,7 +61,6 @@ public class Health : MonoBehaviour, IStatus
     {
         onCharacterDeath -= Die;
         Hunger.maxHungerReached -= MaxHungerReached;
-        StatusManager.onHealthBuffApplied -= ApplyBuff;
     }
 
     private void Die()

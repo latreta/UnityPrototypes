@@ -18,8 +18,6 @@ public class Hunger : MonoBehaviour
     [Tooltip("Tick Damage time in seconds")]
     [Range(0f,100f)]
     private float tickTime = 5f;
-
-    private StatusManager statusManager;
     
     public delegate void OnHungerChangedDelegate(float amount);
     public delegate void OnHungerFullDelegate();
@@ -27,15 +25,10 @@ public class Hunger : MonoBehaviour
     public static event OnHungerChangedDelegate hungerChanged = delegate { };
     public static OnHungerFullDelegate maxHungerReached = delegate { };
 
+    
     void Start()
     {
-        statusManager = GetComponent<StatusManager>();
-    }
-    
-    void OnEnable()
-    {
         CurrentHunger = maxHunger;
-        StatusManager.onHungerBuffApplied += OnHungerBuffApplied;
     }
 
     private void OnHungerBuffApplied(Buff buff)
@@ -52,12 +45,6 @@ public class Hunger : MonoBehaviour
         maxHunger = previousValue;
         yield return null;
     }
-
-    void OnDisable()
-    {
-        StatusManager.onHungerBuffApplied -= OnHungerBuffApplied;
-    }
-
     private void FixedUpdate()
     {
         timeElapsed += Time.fixedDeltaTime;

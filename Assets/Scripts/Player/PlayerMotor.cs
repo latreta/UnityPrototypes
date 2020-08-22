@@ -5,9 +5,11 @@ public class PlayerMotor : MonoBehaviour, IMotor
 {
     private CharacterController controller;
     private Vector3 moveDirection = Vector3.zero;
-    private float speed = 6f;
-    private float jumpSpeed = 8f;
-    private float gravity = 20f;
+    
+    [SerializeField] private float speed = 6f;
+    [SerializeField] private float jumpSpeed = 8f;
+    [SerializeField] private float gravity = 20f;
+    
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
